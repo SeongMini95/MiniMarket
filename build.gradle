@@ -46,3 +46,9 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
+project(":mm-api") {
+    dependencies {
+        implementation project(":mm-core")
+    }
+}
