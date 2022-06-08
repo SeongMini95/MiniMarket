@@ -1,6 +1,8 @@
 package com.jsm.mm.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsm.mm.domain.certify.Certify;
+import com.jsm.mm.domain.certify.repository.CertifyRepository;
 import com.jsm.mm.domain.dto.request.member.SignUpRequestDto;
 import com.jsm.mm.domain.member.Member;
 import com.jsm.mm.domain.member.repository.MemberRepository;
@@ -34,6 +36,9 @@ class MemberApiControllerTest {
     private MemberRepository memberRepository;
 
     @Autowired
+    private CertifyRepository certifyRepository;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @BeforeEach
@@ -43,6 +48,7 @@ class MemberApiControllerTest {
 
     @AfterEach
     void tearDown() {
+        certifyRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
     }
 
@@ -63,6 +69,7 @@ class MemberApiControllerTest {
                 .content(new ObjectMapper().writeValueAsString(signUpRequestDto)));
 
         Member member = memberRepository.findAll().get(0);
+        Certify certify = certifyRepository.findAll().get(0);
 
         // then
         actions
@@ -72,5 +79,7 @@ class MemberApiControllerTest {
         assertThat(passwordEncoder.matches(signUpRequestDto.getPassword(), member.getPassword())).isTrue();
         assertThat(member.getEmail()).isEqualTo(signUpRequestDto.getEmail());
         assertThat(member.getNickname()).isEqualTo(signUpRequestDto.getNickname());
+
+        assertThat(certify.getMember().getId()).isEqualTo(member.getId());
     }
 }
