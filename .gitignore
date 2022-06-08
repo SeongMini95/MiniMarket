@@ -1,0 +1,23 @@
+HELP.md
+../MiniMarket_tmp2/.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+## Querydsl ##
+**/src/main/generated/
+
+## applcation ##
+application-*.yml
+# Project exclude paths
+/.gradle/
