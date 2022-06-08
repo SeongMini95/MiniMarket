@@ -1,3 +1,4 @@
 rootProject.name = 'MiniMarket'
 include 'mm-core'
+include 'mm-api'
 
