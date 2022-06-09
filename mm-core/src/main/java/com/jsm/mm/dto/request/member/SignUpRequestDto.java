@@ -1,4 +1,4 @@
-package com.jsm.mm.domain.dto.request.member;
+package com.jsm.mm.dto.request.member;
 
 import com.jsm.mm.domain.member.Member;
 import com.jsm.mm.domain.member.enums.RoleName;
@@ -16,15 +16,20 @@ public class SignUpRequestDto {
     private String email;
     private String nickname;
 
+    private String location;
+    private String range;
+
     @Builder
-    public SignUpRequestDto(String username, String password, String email, String nickname) {
+    public SignUpRequestDto(String username, String password, String email, String nickname, String location, String range) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.nickname = nickname;
+        this.location = location;
+        this.range = range;
     }
 
-    public Member toMemberEntity(String encPassword) {
+    public Member toEntity(String encPassword) {
         return Member.builder()
                 .username(username)
                 .password(encPassword)

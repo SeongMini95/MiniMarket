@@ -1,6 +1,6 @@
 package com.jsm.mm.controller;
 
-import com.jsm.mm.domain.dto.request.member.SignUpRequestDto;
+import com.jsm.mm.dto.request.member.SignUpRequestDto;
 import com.jsm.mm.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
