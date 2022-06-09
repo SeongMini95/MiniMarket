@@ -3,9 +3,12 @@ package com.jsm.mm.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jsm.mm.domain.certify.Certify;
 import com.jsm.mm.domain.certify.repository.CertifyRepository;
-import com.jsm.mm.domain.dto.request.member.SignUpRequestDto;
 import com.jsm.mm.domain.member.Member;
 import com.jsm.mm.domain.member.repository.MemberRepository;
+import com.jsm.mm.domain.memberlocation.MemberLocation;
+import com.jsm.mm.domain.memberlocation.repository.MemberLocationRepository;
+import com.jsm.mm.domain.memberrangelocation.repository.MemberRangeLocationRepository;
+import com.jsm.mm.dto.request.member.SignUpRequestDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,6 +42,12 @@ class MemberApiControllerTest {
     private CertifyRepository certifyRepository;
 
     @Autowired
+    private MemberLocationRepository memberLocationRepository;
+
+    @Autowired
+    private MemberRangeLocationRepository memberRangeLocationRepository;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @BeforeEach
@@ -48,6 +57,8 @@ class MemberApiControllerTest {
 
     @AfterEach
     void tearDown() {
+        memberRangeLocationRepository.deleteAllInBatch();
+        memberLocationRepository.deleteAllInBatch();
         certifyRepository.deleteAllInBatch();
         memberRepository.deleteAllInBatch();
     }
@@ -61,6 +72,8 @@ class MemberApiControllerTest {
                 .password("~test123")
                 .email("test123@naver.com")
                 .nickname("test123")
+                .location("31260110")
+                .range("3")
                 .build();
 
         // when
@@ -70,6 +83,8 @@ class MemberApiControllerTest {
 
         Member member = memberRepository.findAll().get(0);
         Certify certify = certifyRepository.findAll().get(0);
+        MemberLocation memberLocation = memberLocationRepository.findAll().get(0);
+        int memberRangeLocationSize = memberRangeLocationRepository.findAll().size();
 
         // then
         actions
@@ -81,5 +96,10 @@ class MemberApiControllerTest {
         assertThat(member.getNickname()).isEqualTo(signUpRequestDto.getNickname());
 
         assertThat(certify.getMember().getId()).isEqualTo(member.getId());
+
+        assertThat(memberLocation.getId().getMember().getId()).isEqualTo(member.getId());
+        assertThat(memberLocation.getId().getLocation().getId()).isEqualTo(signUpRequestDto.getLocation());
+
+        assertThat(memberRangeLocationSize).isGreaterThan(0);
     }
 }
