@@ -1,8 +1,10 @@
 package com.jsm.mm.domain.location;
 
 import com.jsm.mm.domain.BaseTimeEntity;
+import com.jsm.mm.domain.location.converter.centCoordsConverter;
 import com.jsm.mm.domain.location.converter.locCoordsConverter;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,13 +37,18 @@ public class Location extends BaseTimeEntity {
     @Column(name = "loc_coords", nullable = false)
     private MultiPolygon locCoords;
 
+    @Convert(converter = centCoordsConverter.class)
+    @Column(name = "cent_coords", nullable = false)
+    private Point centCoords;
+
     @Builder
-    public Location(String id, String sidoNm, String sggNm, String emdNm, MultiPolygon locCoords) {
+    public Location(String id, String sidoNm, String sggNm, String emdNm, MultiPolygon locCoords, Point centCoords) {
         this.id = id;
         this.sidoNm = sidoNm;
         this.sggNm = sggNm;
         this.emdNm = emdNm;
         this.locCoords = locCoords;
+        this.centCoords = centCoords;
     }
 
     @Override

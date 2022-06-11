@@ -9,13 +9,12 @@ import java.util.Optional;
 
 public interface LocationRepository extends JpaRepository<Location, String> {
 
-    @Query(value = "select id, sido_nm, sgg_nm, emd_nm, st_aswkt(loc_coords) as loc_coords, create_datetime, modify_datetime from location where id = ?1", nativeQuery = true)
+    @Query(value = "select id, sido_nm, sgg_nm, emd_nm, st_aswkt(loc_coords) as loc_coords, st_aswkt(cent_coords) as cent_coords, create_datetime, modify_datetime from location where id = ?1", nativeQuery = true)
     Optional<Location> findById(String id);
 
-    @Query(value = "select id, sido_nm, sgg_nm, emd_nm, st_aswkt(loc_coords) as loc_coords, create_datetime, modify_datetime, " +
-            "(6371 * ACOS(COS(RADIANS(?2)) * COS(RADIANS(Y(st_centroid(loc_coords)))) * COS(RADIANS(X(st_centroid(loc_coords))) - RADIANS(?1)) + SIN(RADIANS(?2)) * SIN(RADIANS(Y(st_centroid(loc_coords)))))) AS distance " +
+    @Query(value = "select id, sido_nm, sgg_nm, emd_nm, st_aswkt(loc_coords) as loc_coords, st_aswkt(cent_coords) as cent_coords, create_datetime, modify_datetime " +
             "from location " +
-            "having distance <= ?3 " +
+            "where st_distance_sphere(st_geomfromtext(?1), st_centroid(loc_coords)) <= ?2 " +
             "order by sido_nm, sgg_nm, emd_nm", nativeQuery = true)
-    List<Location> findByInDistance(double x, double y, int distance);
+    List<Location> findByInDistance(String point, int meter);
 }

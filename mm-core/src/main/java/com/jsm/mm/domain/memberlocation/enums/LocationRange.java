@@ -10,13 +10,13 @@ import java.util.Arrays;
 public enum LocationRange {
 
     ONLY("본인 지역만", "1", 0),
-    SMALL("소", "2", 10),
-    MEDIUM("중", "3", 12),
-    LARGE("대", "4", 15);
+    SMALL("소", "2", 10000),
+    MEDIUM("중", "3", 12000),
+    LARGE("대", "4", 15000);
 
     private final String desc;
     private final String code;
-    private final int distance;
+    private final int meter;
 
     public static LocationRange ofCode(String code) {
         return Arrays.stream(LocationRange.values())

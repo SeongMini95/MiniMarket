@@ -39,7 +39,7 @@ public class MemberLocationService {
         Location location = locationRepository.findById(memberLocationSaveRequestDto.getLocation()).orElseThrow();
         MemberLocation memberLocation = memberLocationRepository.save(memberLocationSaveRequestDto.toEntity(member, location, isCertify));
 
-        List<Location> inRangeLocList = locationService.findByInDistance(location.getLocCoords().getCentroid().getX(), location.getLocCoords().getCentroid().getY(), memberLocation.getLocationRange().getDistance());
+        List<Location> inRangeLocList = locationService.findByInDistance(location.getCentCoords(), memberLocation.getLocationRange().getMeter());
         memberRangeLocationRepository.deleteAllByMember(member);
         memberRangeLocationRepository.saveAllBulk(inRangeLocList.stream()
                 .map(loc -> MemberRangeLocation.builder()
