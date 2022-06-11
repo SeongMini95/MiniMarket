@@ -29,15 +29,8 @@ public class MemberLocationService {
 
     @Transactional
     public void save(MemberLocationSaveRequestDto memberLocationSaveRequestDto, Member member, boolean isContainsCheck) {
-        boolean isCertify = false;
-
-        if (isContainsCheck) {
-            // TODO: 2022-06-09 location 포함 체크 로직 해야함
-            isCertify = true;
-        }
-
         Location location = locationRepository.findById(memberLocationSaveRequestDto.getLocation()).orElseThrow();
-        MemberLocation memberLocation = memberLocationRepository.save(memberLocationSaveRequestDto.toEntity(member, location, isCertify));
+        MemberLocation memberLocation = memberLocationRepository.save(memberLocationSaveRequestDto.toEntity(member, location));
 
         List<Location> inRangeLocList = locationService.findByInDistance(location.getCentCoords(), memberLocation.getLocationRange().getMeter());
         memberRangeLocationRepository.deleteAllByMember(member);

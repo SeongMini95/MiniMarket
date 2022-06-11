@@ -25,7 +25,7 @@ public class MemberLocationSaveRequestDto {
         this.range = range;
     }
 
-    public MemberLocation toEntity(Member member, Location location, boolean isCertify) {
+    public MemberLocation toEntity(Member member, Location location) {
         return MemberLocation.builder()
                 .id(MemberLocationId.builder()
                         .member(member)
@@ -33,7 +33,6 @@ public class MemberLocationSaveRequestDto {
                         .locationSeq(seq)
                         .build())
                 .locationRange(LocationRange.ofCode(range))
-                .isCertify(isCertify)
                 .build();
     }
 }

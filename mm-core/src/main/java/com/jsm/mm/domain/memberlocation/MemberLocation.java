@@ -25,14 +25,10 @@ public class MemberLocation extends BaseTimeEntity {
     @Column(name = "location_range", nullable = false)
     private LocationRange locationRange;
 
-    @Column(name = "is_certify", nullable = false)
-    private boolean isCertify;
-
     @Builder
-    public MemberLocation(MemberLocationId id, LocationRange locationRange, boolean isCertify) {
+    public MemberLocation(MemberLocationId id, LocationRange locationRange) {
         this.id = id;
         this.locationRange = locationRange;
-        this.isCertify = isCertify;
     }
 
     @Override
