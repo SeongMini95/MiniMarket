@@ -28,7 +28,7 @@ public class MemberLocationService {
     private final LocationService locationService;
 
     @Transactional
-    public void save(MemberLocationSaveRequestDto memberLocationSaveRequestDto, Member member, boolean isContainsCheck) {
+    public void save(MemberLocationSaveRequestDto memberLocationSaveRequestDto, Member member) {
         Location location = locationRepository.findById(memberLocationSaveRequestDto.getLocation()).orElseThrow();
         MemberLocation memberLocation = memberLocationRepository.save(memberLocationSaveRequestDto.toEntity(member, location));
 

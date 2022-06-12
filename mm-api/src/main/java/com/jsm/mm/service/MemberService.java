@@ -32,6 +32,6 @@ public class MemberService {
                 .seq(1)
                 .range(signUpRequestDto.getRange())
                 .build();
-        memberLocationService.save(memberLocationSaveRequestDto, member, false);
+        memberLocationService.save(memberLocationSaveRequestDto, member);
     }
 }
