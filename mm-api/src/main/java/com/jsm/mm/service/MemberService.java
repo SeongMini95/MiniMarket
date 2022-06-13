@@ -6,7 +6,9 @@ import com.jsm.mm.domain.member.Member;
 import com.jsm.mm.domain.member.repository.MemberRepository;
 import com.jsm.mm.dto.request.member.SignUpRequestDto;
 import com.jsm.mm.dto.request.memberlocation.MemberLocationSaveRequestDto;
+import com.jsm.mm.eventpublisher.event.SignUpEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ public class MemberService {
     private final CertifyService certifyService;
     private final MemberLocationService memberLocationService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public void signUp(SignUpRequestDto signUpRequestDto) {
@@ -39,6 +42,8 @@ public class MemberService {
                 .range(signUpRequestDto.getRange())
                 .build();
         memberLocationService.save(memberLocationSaveRequestDto, member);
+
+        eventPublisher.publishEvent(new SignUpEvent(member, certify));
     }
 
     @Transactional(readOnly = true)
