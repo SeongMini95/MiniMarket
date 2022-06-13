@@ -23,13 +23,9 @@ public class MemberService {
     @Transactional
     public void signUp(SignUpRequestDto signUpRequestDto) {
         boolean isExistUsername = memberRepository.isExistMember("username", signUpRequestDto.getUsername());
-        if (!isExistUsername) {
-            throw new RuntimeException("이미 존재하는 아이디 입니다.");
-        }
-
         boolean isExistEmail = memberRepository.isExistMember("email", signUpRequestDto.getEmail());
-        if (!isExistEmail) {
-            throw new RuntimeException("이미 존재하는 이메일 입니다.");
+        if (!isExistUsername || !isExistEmail) {
+            throw new RuntimeException();
         }
 
         String encPassword = passwordEncoder.encode(signUpRequestDto.getPassword());
