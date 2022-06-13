@@ -22,6 +22,16 @@ public class MemberService {
 
     @Transactional
     public void signUp(SignUpRequestDto signUpRequestDto) {
+        boolean isExistUsername = memberRepository.isExistMember("username", signUpRequestDto.getUsername());
+        if (!isExistUsername) {
+            throw new RuntimeException("이미 존재하는 아이디 입니다.");
+        }
+
+        boolean isExistEmail = memberRepository.isExistMember("email", signUpRequestDto.getEmail());
+        if (!isExistEmail) {
+            throw new RuntimeException("이미 존재하는 이메일 입니다.");
+        }
+
         String encPassword = passwordEncoder.encode(signUpRequestDto.getPassword());
         Member member = memberRepository.save(signUpRequestDto.toEntity(encPassword));
 
@@ -33,5 +43,10 @@ public class MemberService {
                 .range(signUpRequestDto.getRange())
                 .build();
         memberLocationService.save(memberLocationSaveRequestDto, member);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isExistMember(String column, String value) {
+        return memberRepository.isExistMember(column, value);
     }
 }
