@@ -11,5 +11,6 @@ dependencies {
     implementation 'com.vividsolutions:jts-core:1.14.0'
     implementation "org.hibernate:hibernate-spatial:${dependencyManagement.importedProperties['hibernate.version']}"
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.security:spring-security-test'
 }
