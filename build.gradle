@@ -52,3 +52,9 @@ project(":mm-api") {
         implementation project(":mm-core")
     }
 }
+
+project(":mm-web") {
+    dependencies {
+        implementation project(":mm-core")
+    }
+}
